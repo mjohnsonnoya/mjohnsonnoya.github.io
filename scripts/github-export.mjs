@@ -1,6 +1,6 @@
 // Writes daily GitHub contribution counts (the calendar on your profile) to data/github.json
 // for the contribution heatmap. Uses the GitHub CLI's login (`gh auth login`).
-// Run with: npm run github
+// Run with: npm run github. It also runs daily on GitHub (.github/workflows/github-heatmap.yml).
 // The counts match the public profile, which already shows private-repo activity as numbers
 // if "Private contributions" is on in your GitHub profile settings.
 

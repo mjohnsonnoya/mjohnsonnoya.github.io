@@ -1,0 +1,45 @@
+# Refreshes data/github.json (the contribution heatmap) once a day and pushes it, which
+# republishes the site. To run it now: the repo's Actions tab > Update GitHub heatmap >
+# Run workflow, or `gh workflow run github-heatmap.yml`.
+name: Update GitHub heatmap
+
+on:
+  schedule:
+    - cron: "23 7 * * *" # every day at 07:23 UTC, just after midnight in Denver
+  workflow_dispatch:
+
+permissions:
+  contents: write # to push the updated file
+
+concurrency:
+  group: github-heatmap
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Export contribution counts
+        run: node scripts/github-export.mjs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_USER: ${{ github.repository_owner }} # this token can't look up "who am I"
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/github.json
+          if git diff --cached --quiet; then
+            echo "No change."
+            exit 0
+          fi
+          git commit -m "Update GitHub contribution counts"
+          # The Anki add-on may have pushed in the meantime. Its commits only touch
+          # data/anki.json, so replaying this one on top of them is always clean.
+          for attempt in 1 2 3; do
+            git push && exit 0
+            git pull --rebase
+          done
+          exit 1
