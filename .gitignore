@@ -1,0 +1,7 @@
+node_modules/
+.DS_Store
+*.tmp
+# Written by Anki and the website heatmap add-on
+__pycache__/
+anki-addon/meta.json
+anki-addon/push.log

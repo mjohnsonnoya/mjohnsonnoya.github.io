@@ -1,0 +1,15 @@
+{
+  "name": "mjohnsonnoya.github.io",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "serve": "python3 -m http.server 8000",
+    "anki": "node scripts/anki-export.mjs",
+    "github": "node scripts/github-export.mjs"
+  },
+  "devDependencies": {
+    "typescript": "^7.0.2"
+  }
+}

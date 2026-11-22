@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>mjohnsonnoya</title>
+  <link rel="preload" href="assets/avatar.webp" as="image" type="image/webp">
+  <link rel="stylesheet" href="styles.css?v=2">
+  <script type="module" src="js/main.js"></script>
+</head>
+<body>
+  <main class="column">
+    <button class="avatar" id="avatar" type="button" aria-label="Portrait of Marcos Johnson-Noya drawn from circles. Press to redraw.">
+      <svg aria-hidden="true"></svg>
+    </button>
+    <h1 class="name">Marcos JN</h1>
+
+    <section class="section" aria-labelledby="process-heading">
+      <h2 id="process-heading">Working on the process</h2>
+      <!-- src/heatmap.ts draws these calendars from data/anki.json and data/github.json. -->
+      <div class="heatmap-group">
+        <h3>
+          <a class="heatmap-heading-link" href="https://apps.ankiweb.net/">
+            <img class="heatmap-heading-logo" src="https://raw.githubusercontent.com/ankitects/anki/main/docs-site/media/anki-logo.svg" alt="" width="24" height="24">
+            <span>Anki</span>
+          </a>
+        </h3>
+        <figure class="heatmap" id="anki-heatmap"></figure>
+      </div>
+      <div class="heatmap-group">
+        <h3>
+          <a class="heatmap-heading-link" href="https://github.com/">
+            <img class="heatmap-heading-logo" src="https://raw.githubusercontent.com/primer/octicons/main/icons/mark-github-24.svg" alt="" width="24" height="24">
+            <span>GitHub</span>
+          </a>
+        </h3>
+        <figure class="heatmap" id="github-heatmap"></figure>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

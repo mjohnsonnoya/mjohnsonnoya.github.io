@@ -1,0 +1,107 @@
+:root {
+  --measure: 40rem;   /* column width, ~70 characters of body text */
+  --gutter: 1.25rem;  /* side padding on narrow screens */
+  --avatar: 160px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: #fff;   /* the avatar builds up from white, so the page stays white */
+  font-family: Arial, "Liberation Sans", Arimo, sans-serif; /* the last two are free Arial look-alikes on Linux */
+  line-height: 1.5;
+}
+
+.column {
+  max-width: var(--measure);
+  margin-inline: auto;
+  padding: 4rem var(--gutter);
+}
+
+img, video, svg { max-width: 100%; height: auto; display: block; }
+
+/* Circle avatar, rebuilt from translucent circles by src/avatar.ts. Click to redraw.
+   The SVG overhangs the button so shapes can spill past the circle;
+   avatar.ts sets its exact inset from CONFIG.bleed. */
+.avatar {
+  position: relative;
+  display: block;
+  margin-inline: auto;
+  width: var(--avatar);
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.avatar svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;     /* overrides the global svg rule; the overhang is wider than the button */
+  pointer-events: none;
+}
+.avatar:focus-visible { outline: 2px solid #025e8d; outline-offset: 16px; }
+
+/* Name, centered under the avatar. The top margin clears the avatar's spill
+   (bleed 0.15 of the radius = 7.5% of its width) and then leaves a gap. */
+.name {
+  margin: calc(var(--avatar) * 0.075 + 1.25rem) 0 0;
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  text-align: center;
+}
+
+/* Content sections below the intro. */
+.section { margin-top: 4rem; }
+.section h2 {
+  margin: 0 0 1rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+/* Daily activity calendars, drawn by src/heatmap.ts. */
+.heatmap-group + .heatmap-group { margin-top: 1.75rem; }
+.heatmap-group h3 { margin: 0 0 0.5rem; }
+.heatmap-heading-link {
+  display: flex;
+  flex-flow: row nowrap;
+  width: fit-content;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+  color: inherit;
+  text-decoration: none;
+}
+.heatmap-heading-link:is(:hover, :focus-visible) {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+.heatmap-heading-logo {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+.heatmap { position: relative; margin: 0; }
+.heatmap-grid rect.is-active { stroke: #000; stroke-width: 1.5px; }
+.heatmap-tip {
+  position: absolute;
+  z-index: 1;
+  transform: translate(-50%, calc(-100% - 6px));
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: #000;
+  color: #fff;
+  font-size: 13px;
+  line-height: 1.4;
+  white-space: nowrap;
+  pointer-events: none;
+}
