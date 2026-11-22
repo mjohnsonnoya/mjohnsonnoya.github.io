@@ -9,7 +9,9 @@
 body {
   margin: 0;
   background: #fff;   /* the avatar builds up from white, so the page stays white */
-  font-family: Arial, "Liberation Sans", Arimo, sans-serif; /* the last two are free Arial look-alikes on Linux */
+  /* Each device's own interface font: San Francisco on Apple devices, Segoe UI on Windows,
+     Roboto on Android. Arial was here before. */
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   line-height: 1.5;
 }
 
@@ -20,6 +22,14 @@ body {
 }
 
 img, video, svg { max-width: 100%; height: auto; display: block; }
+
+/* Links take the color of the text around it, instead of the browser's blue and visited
+   purple. The underline stays, so a link inside a sentence still looks clickable. */
+a {
+  color: inherit;
+  text-underline-offset: 0.15em;
+}
+a:hover { text-decoration-thickness: 2px; }
 
 /* Circle avatar, rebuilt from translucent circles by src/avatar.ts. Click to redraw.
    The SVG overhangs the button so shapes can spill past the circle;
@@ -58,8 +68,47 @@ img, video, svg { max-width: 100%; height: auto; display: block; }
   text-align: center;
 }
 
+.description,
+.friends-list {
+  color: #404040;
+  font-size: 1.125rem;
+  font-weight: 400;
+  line-height: 1.75rem;
+  letter-spacing: normal;
+  text-align: left;
+}
+
+.description { margin: 1rem 0 0; }
+.friends-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.25rem 2rem;
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+@media (min-width: 36rem) {
+  .friends-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+.description a,
+.friends-list a {
+  text-decoration: underline;
+  text-decoration-color: #a3a3a3;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition-property: color, text-decoration-color;
+  transition-duration: 150ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+.description a:is(:hover, :focus-visible),
+.friends-list a:is(:hover, :focus-visible) {
+  color: #000;
+  text-decoration-color: #000;
+}
+
 /* Content sections below the intro. */
-.section { margin-top: 4rem; }
+.section { margin-top: 2rem; }
 .section h2 {
   margin: 0 0 1rem;
   font-size: 1.25rem;
