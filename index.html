@@ -3,13 +3,18 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The page has its own light and dark colors (styles.css). Saying so up front avoids a
+       white flash in dark mode, and tells dark-mode extensions such as Noir not to recolor it. -->
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)">
   <title>mjohnsonnoya</title>
   <!-- Made from assets/avatar.webp: a circle around the face for browser tabs, and the
        full square for iPhone home screens (iOS rounds the corners itself). -->
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
   <link rel="preload" href="assets/avatar.webp" as="image" type="image/webp">
-  <link rel="stylesheet" href="styles.css?v=14">
+  <link rel="stylesheet" href="styles.css?v=15">
   <script type="module" src="js/main.js"></script>
 </head>
 <body>
@@ -34,7 +39,7 @@
       <div class="heatmap-group">
         <h3>
           <a class="heatmap-heading-link" href="https://github.com/">
-            <img class="heatmap-heading-logo" src="https://raw.githubusercontent.com/primer/octicons/main/icons/mark-github-24.svg" alt="" width="24" height="24">
+            <img class="heatmap-heading-logo is-black" src="https://raw.githubusercontent.com/primer/octicons/main/icons/mark-github-24.svg" alt="" width="24" height="24">
             <span>GitHub</span>
           </a>
         </h3>

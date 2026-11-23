@@ -7,14 +7,13 @@ if (avatar && svg) {
     const redraw = mountShapeAvatar(svg, 'assets/avatar.webp');
     avatar.addEventListener('click', redraw);
 }
-// Each heatmap gets its own one-hue ramp, so the two scales aren't read as one.
+// The calendars' colors are in styles.css, under #anki-heatmap and #github-heatmap.
 const anki = document.querySelector('#anki-heatmap');
 if (anki) {
     void mountHeatmap(anki, {
         url: 'data/anki.json',
         label: 'Anki reviews',
         unit: ['review', 'reviews'],
-        colors: ['#ebebeb', '#86b6ef', '#3987e5', '#1c5cab', '#0d366b'],
     }).catch((error) => {
         console.error('Unable to display the Anki heatmap.', error);
     });
@@ -25,8 +24,6 @@ if (github) {
         url: 'data/github.json',
         label: 'GitHub contributions',
         unit: ['contribution', 'contributions'],
-        // GitHub's default light-theme contribution palette from Primer.
-        colors: ['#eff2f5', '#aceebb', '#4ac26b', '#2da44e', '#116329'],
     }).catch((error) => {
         console.error('Unable to display the GitHub heatmap.', error);
     });

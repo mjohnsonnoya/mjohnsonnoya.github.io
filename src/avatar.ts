@@ -30,7 +30,6 @@ const CONFIG = {
   mutations: 120,      // hill-climb steps per circle
   maxFails: 40,        // stop climbing after this many non-improving steps
   alpha: 0.6,          // shape opacity
-  startColor: [255, 255, 255] as RGB, // matches the page, so the portrait builds up out of nothing
   bleed: 0.15,         // how far shapes may reach past the portrait circle, as a fraction of its radius
   maxRadius: 0.4,      // largest circle, as a fraction of the portrait radius; keeps the edge broken up
   minRadius: 0.02,     // smallest circle, same units; stops circles from copying single pixels
@@ -44,6 +43,15 @@ const CONFIG = {
 };
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
+
+// The portrait builds up out of the page's background, so it seems to appear from nothing.
+// That color depends on the device's light or dark setting (styles.css), so it is read
+// each time the drawing starts.
+function pageColor(): RGB {
+  const channels = getComputedStyle(document.body).backgroundColor.match(/[\d.]+/g) ?? [];
+  const [red = 255, green = 255, blue = 255] = channels.map(Number);
+  return [red, green, blue];
+}
 
 /** Starts drawing `src` into `svg`. Returns a function that restarts the drawing. */
 export function mountShapeAvatar(svg: SVGSVGElement, src: string): () => void {
@@ -95,6 +103,8 @@ export function mountShapeAvatar(svg: SVGSVGElement, src: string): () => void {
   }).catch((error: unknown) => {
     console.error(`Unable to render the avatar from ${src}.`, error);
   });
+  // The circles' colors are worked out against the page color, so start over if it changes.
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', start);
 
   function prepare(): void {
     sourceSize = Math.min(image.naturalWidth, image.naturalHeight);
@@ -236,7 +246,7 @@ export function mountShapeAvatar(svg: SVGSVGElement, src: string): () => void {
   }
 
   function resetCurrent(): void {
-    const [red, green, blue] = CONFIG.startColor;
+    const [red, green, blue] = pageColor();
     for (let pixel = 0; pixel < canvasWidth * canvasHeight; pixel++) {
       currentPixels[pixel * 3] = red;
       currentPixels[pixel * 3 + 1] = green;

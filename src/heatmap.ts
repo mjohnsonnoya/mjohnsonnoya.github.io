@@ -13,9 +13,9 @@ export interface HeatmapOptions {
   url: string;
   label: string; // plural noun for the graph's label, e.g. "Anki reviews"
   unit: [singular: string, plural: string];
-  // Zero, then four activity levels from light to dark.
-  colors: [string, string, string, string, string];
 }
+// Each cell gets a class from level-0 (no activity) to level-4; styles.css colors the levels
+// per calendar, with separate light and dark palettes.
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -94,7 +94,7 @@ export async function mountHeatmap(root: HTMLElement, options: HeatmapOptions): 
         rect.setAttribute('width', cellSize.toFixed(2));
         rect.setAttribute('height', cellSize.toFixed(2));
         rect.setAttribute('rx', '2');
-        rect.setAttribute('fill', options.colors[colorLevel(countAt(dayIndex))]);
+        rect.setAttribute('class', `level-${colorLevel(countAt(dayIndex))}`);
         rect.dataset.dayIndex = String(dayIndex);
         cells.append(rect);
       }

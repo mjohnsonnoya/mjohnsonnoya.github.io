@@ -2,13 +2,37 @@
   --measure: 40rem;   /* column width, ~70 characters of body text */
   --gutter: 1.25rem;  /* side padding on narrow screens */
   --avatar: 160px;
+
+  /* Colors. The page follows the device's light or dark setting; the dark values are below.
+     Declaring both schemes also tells dark-mode extensions such as Noir to leave it alone. */
+  color-scheme: light dark;
+  --page: #fff;        /* avatar.ts builds the portrait up out of this color */
+  --ink: #000;         /* name, headings, and links on hover */
+  --ink-body: #404040; /* paragraphs and lists */
+  --underline: #a3a3a3;
+  --focus: #025e8d;
+  --tip-bg: #000;
+  --tip-ink: #fff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --page: #0a0a0a;
+    --ink: #fafafa;
+    --ink-body: #d4d4d4;
+    --underline: #737373;
+    --focus: #6cb6ff;
+    --tip-bg: #fafafa;
+    --tip-ink: #0a0a0a;
+  }
 }
 
 *, *::before, *::after { box-sizing: border-box; }
 
 body {
   margin: 0;
-  background: #fff;   /* the avatar builds up from white, so the page stays white */
+  background: var(--page);
+  color: var(--ink);
   /* Each device's own interface font: San Francisco on Apple devices, Segoe UI on Windows,
      Roboto on Android. Arial was here before. */
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -55,7 +79,7 @@ a:hover { text-decoration-thickness: 2px; }
   max-width: none;     /* overrides the global svg rule; the overhang is wider than the button */
   pointer-events: none;
 }
-.avatar:focus-visible { outline: 2px solid #025e8d; outline-offset: 16px; }
+.avatar:focus-visible { outline: 2px solid var(--focus); outline-offset: 16px; }
 
 /* Name, centered under the avatar. The top margin clears the avatar's spill
    (bleed 0.15 of the radius = 7.5% of its width) and then leaves a gap. */
@@ -70,7 +94,7 @@ a:hover { text-decoration-thickness: 2px; }
 
 .description,
 .friends-list {
-  color: #404040;
+  color: var(--ink-body);
   font-size: 1.125rem;
   font-weight: 400;
   line-height: 1.75rem;
@@ -94,7 +118,7 @@ a:hover { text-decoration-thickness: 2px; }
 .description a,
 .friends-list a {
   text-decoration: underline;
-  text-decoration-color: #a3a3a3;
+  text-decoration-color: var(--underline);
   text-decoration-thickness: 1px;
   text-underline-offset: 3px;
   transition-property: color, text-decoration-color;
@@ -103,8 +127,8 @@ a:hover { text-decoration-thickness: 2px; }
 }
 .description a:is(:hover, :focus-visible),
 .friends-list a:is(:hover, :focus-visible) {
-  color: #000;
-  text-decoration-color: #000;
+  color: var(--ink);
+  text-decoration-color: var(--ink);
 }
 
 /* Content sections below the intro. */
@@ -140,15 +164,39 @@ a:hover { text-decoration-thickness: 2px; }
   flex-shrink: 0;
 }
 .heatmap { position: relative; margin: 0; }
-.heatmap-grid rect.is-active { stroke: #000; stroke-width: 1.5px; }
+
+/* Cell colors: an empty day, then four activity levels (heatmap.ts sets level-0 to level-4).
+   Each calendar keeps its own hue so the two scales aren't read as one. More activity is
+   darker on the light page and brighter on the dark one. */
+#anki-heatmap {
+  --level-0: #ebebeb; --level-1: #86b6ef; --level-2: #3987e5; --level-3: #1c5cab; --level-4: #0d366b;
+}
+#github-heatmap { /* GitHub's own contribution colors (Primer) */
+  --level-0: #eff2f5; --level-1: #aceebb; --level-2: #4ac26b; --level-3: #2da44e; --level-4: #116329;
+}
+@media (prefers-color-scheme: dark) {
+  #anki-heatmap {
+    --level-0: #262626; --level-1: #1d4e8f; --level-2: #2d6fc7; --level-3: #4f94ea; --level-4: #a3c8f5;
+  }
+  #github-heatmap { /* GitHub's dark colors, with level 1 lifted so single days show here */
+    --level-0: #151b23; --level-1: #0b5222; --level-2: #196c2e; --level-3: #2ea043; --level-4: #56d364;
+  }
+  .heatmap-heading-logo.is-black { filter: invert(1); } /* the GitHub mark */
+}
+.heatmap-grid .level-0 { fill: var(--level-0); }
+.heatmap-grid .level-1 { fill: var(--level-1); }
+.heatmap-grid .level-2 { fill: var(--level-2); }
+.heatmap-grid .level-3 { fill: var(--level-3); }
+.heatmap-grid .level-4 { fill: var(--level-4); }
+.heatmap-grid rect.is-active { stroke: var(--ink); stroke-width: 1.5px; }
 .heatmap-tip {
   position: absolute;
   z-index: 1;
   transform: translate(-50%, calc(-100% - 6px));
   padding: 4px 8px;
   border-radius: 4px;
-  background: #000;
-  color: #fff;
+  background: var(--tip-bg);
+  color: var(--tip-ink);
   font-size: 13px;
   line-height: 1.4;
   white-space: nowrap;

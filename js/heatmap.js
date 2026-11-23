@@ -1,6 +1,8 @@
 // Calendar heatmap of a daily count (Anki reviews, GitHub contributions), drawn as SVG from a
 // JSON file written by a script in scripts/. It shows as many whole weeks as fit the width,
 // up to a year, so phones get the most recent months at the same cell size.
+// Each cell gets a class from level-0 (no activity) to level-4; styles.css colors the levels
+// per calendar, with separate light and dark palettes.
 const SVG_NS = 'http://www.w3.org/2000/svg';
 const DAY_MS = 24 * 60 * 60 * 1000;
 const GAP = 2; // px between cells
@@ -68,7 +70,7 @@ export async function mountHeatmap(root, options) {
                 rect.setAttribute('width', cellSize.toFixed(2));
                 rect.setAttribute('height', cellSize.toFixed(2));
                 rect.setAttribute('rx', '2');
-                rect.setAttribute('fill', options.colors[colorLevel(countAt(dayIndex))]);
+                rect.setAttribute('class', `level-${colorLevel(countAt(dayIndex))}`);
                 rect.dataset.dayIndex = String(dayIndex);
                 cells.append(rect);
             }
