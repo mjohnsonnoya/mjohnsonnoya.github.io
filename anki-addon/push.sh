@@ -12,6 +12,15 @@ PATH="/opt/homebrew/bin:/usr/local/bin:$PATH:/usr/bin:/bin" # Anki's own PATH is
 GIT_TERMINAL_PROMPT=0 # no terminal to ask for a password in; fail instead
 export PATH GIT_TERMINAL_PROMPT
 
+# Commit as a bot, not as you, so syncs don't count as GitHub contributions (which would
+# also inflate the GitHub heatmap on the site). The .invalid domain can't belong to any
+# GitHub account. Setting the committer too covers the rebase below, which re-commits.
+GIT_AUTHOR_NAME="Anki heatmap"
+GIT_AUTHOR_EMAIL="anki-heatmap@noreply.invalid"
+GIT_COMMITTER_NAME=$GIT_AUTHOR_NAME
+GIT_COMMITTER_EMAIL=$GIT_AUTHOR_EMAIL
+export GIT_AUTHOR_NAME GIT_AUTHOR_EMAIL GIT_COMMITTER_NAME GIT_COMMITTER_EMAIL
+
 log="$(cd "$(dirname "$0")" && pwd)/push.log"
 cd "$1" || exit 1
 git_dir=$(git rev-parse --absolute-git-dir 2>/dev/null) || {
